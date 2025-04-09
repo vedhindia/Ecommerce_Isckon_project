@@ -15,12 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $current_password = $_POST['current_password'];
+    $new_password = $_POST['new_password'];
+
     $phone = isset($_POST['phone']) ? mysqli_real_escape_string($conn, $_POST['phone']) : null;
     $address = isset($_POST['address']) ? mysqli_real_escape_string($conn, $_POST['address']) : null;
     $city = isset($_POST['city']) ? mysqli_real_escape_string($conn, $_POST['city']) : null;
     $state = isset($_POST['state']) ? mysqli_real_escape_string($conn, $_POST['state']) : null;
     $pincode = isset($_POST['pincode']) ? mysqli_real_escape_string($conn, $_POST['pincode']) : null;
-    $newsletter = isset($_POST['newsletter']) ? 1 : 0;
 
     // Validation
     if (empty($first_name) || empty($last_name) || empty($email) || empty($current_password)) {
@@ -29,60 +30,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Verify current password
-    $stmt = $conn->prepare("SELECT password FROM users WHERE id = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows == 0) {
+    $query = "SELECT password FROM users WHERE id = $user_id";
+    $result = mysqli_query($conn, $query);
+    
+    if (mysqli_num_rows($result) == 0) {
         echo json_encode(['status' => 'error', 'message' => 'User not found']);
         exit;
     }
 
-    $user = $result->fetch_assoc();
+    $user = mysqli_fetch_assoc($result);
     if (!password_verify($current_password, $user['password'])) {
         echo json_encode(['status' => 'error', 'message' => 'Current password is incorrect']);
         exit;
     }
 
     // Check if email already exists (for another user)
-    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
-    $stmt->bind_param("si", $email, $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $query = "SELECT id FROM users WHERE email = '$email' AND id != $user_id";
+    $result = mysqli_query($conn, $query);
 
-    if ($result->num_rows > 0) {
+    if (mysqli_num_rows($result) > 0) {
         echo json_encode(['status' => 'error', 'message' => 'Email already exists']);
         exit;
     }
 
-    // Prepare update query (no password change)
-    $stmt = $conn->prepare("UPDATE users SET 
-                        first_name = ?, 
-                        last_name = ?, 
-                        email = ?,
-                        phone = ?,
-                        address = ?,
-                        city = ?,
-                        state = ?,
-                        pincode = ?,
-                        newsletter = ? 
-                        WHERE id = ?");
+    // Update query
+    if (!empty($new_password)) {
+        $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
+        $query = "UPDATE users SET 
+                    first_name = '$first_name', 
+                    last_name = '$last_name', 
+                    email = '$email',
+                    phone = '$phone',
+                    address = '$address',
+                    city = '$city',
+                    state = '$state',
+                    pincode = '$pincode',
+                    password = '$hashed_password' 
+                    WHERE id = $user_id";
+    } else {
+        $query = "UPDATE users SET 
+                    first_name = '$first_name', 
+                    last_name = '$last_name', 
+                    email = '$email',
+                    phone = '$phone',
+                    address = '$address',
+                    city = '$city',
+                    state = '$state',
+                    pincode = '$pincode' 
+                    WHERE id = $user_id";
+    }
 
-    $stmt->bind_param("ssssssssii", 
-            $first_name, 
-            $last_name, 
-            $email,
-            $phone,
-            $address,
-            $city,
-            $state,
-            $pincode,
-            $newsletter,
-            $user_id);
-
-    // Execute the query
-    if ($stmt->execute()) {
+    // Execute query
+    if (mysqli_query($conn, $query)) {
         // Update session data if email has changed
         if ($_SESSION['email'] != $email) {
             $_SESSION['email'] = $email;
@@ -96,13 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         // Error: Show error message
         echo "<script>
-                alert('Failed to update profile: " . $conn->error . "');
+                alert('Failed to update profile: " . mysqli_error($conn) . "');
                 window.location.href = 'account-info.php';  // Redirect to desired page
               </script>";
     }
 
-    // Close statement and connection
-    $stmt->close();
-    $conn->close();
+    // Close connection
+    mysqli_close($conn);
 }
 ?>

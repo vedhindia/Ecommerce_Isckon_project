@@ -117,7 +117,7 @@ requireLogin();
                             </div>
                             <div class="card-body">
 
-							<?php
+                                <?php
 							$user_id = $_SESSION['user_id'];
 
                                                    $sql = "SELECT * FROM  users WHERE id=$user_id";
@@ -132,7 +132,8 @@ requireLogin();
                                             <div class="form-group">
                                                 <label>First Name *</label>
                                                 <input class="form-control" type="text" name="first_name"
-                                                    placeholder="First Name *" value="<?php echo $row['first_name']; ?>" required="">
+                                                    placeholder="First Name *" value="<?php echo $row['first_name']; ?>"
+                                                    required="">
                                             </div>
                                         </div>
 
@@ -141,7 +142,8 @@ requireLogin();
                                             <div class="form-group">
                                                 <label>Last Name *</label>
                                                 <input class="form-control" type="text" name="last_name"
-                                                    placeholder="Last Name *" value="<?php echo $row['last_name']; ?>" required="">
+                                                    placeholder="Last Name *" value="<?php echo $row['last_name']; ?>"
+                                                    required="">
                                             </div>
                                         </div>
 
@@ -150,18 +152,29 @@ requireLogin();
                                             <div class="form-group">
                                                 <label>Email Address *</label>
                                                 <input class="form-control" type="email" name="email"
-                                                    placeholder="Email Address *" value="<?php echo $row['email']; ?>" required="">
+                                                    placeholder="Email Address *" value="<?php echo $row['email']; ?>"
+                                                    required="">
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-md-6">
                                             <!-- Current Password -->
                                             <div class="form-group">
-                                                <label> Password *</label>
+                                                <label>Current Password *</label>
                                                 <input class="form-control" type="password" name="current_password"
                                                     placeholder="Current Password *" required="">
                                             </div>
                                         </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <!-- Current Password -->
+                                            <div class="form-group">
+                                                <label>New Password *</label>
+                                                <input class="form-control" type="password" name="new_password"
+                                                    placeholder="Current Password *" required="">
+                                            </div>
+                                        </div>
+
 
                                         <div class="col-12 col-md-6">
                                             <!-- Phone -->
@@ -231,7 +244,7 @@ requireLogin();
                                         </div>
                                     </div>
                                 </form>
-								<?php } ?>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
