@@ -1,3 +1,11 @@
+<?php
+include 'admin/dbconnection.php';
+include 'check-auth.php';
+
+// Require login for this page
+requireLogin();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,7 +116,7 @@
             <!-- Single Blog -->
             <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                 <article class="post-grid-layout">
-                    <a href="blog-detail.html?id=<?php echo $row['id']; ?>">
+                    <a href="blog-detail.php?id=<?php echo $row['id']; ?>">
                         <div class="post-article-header">
                             <img src="admin/<?php echo $imagePath; ?>" class="img-fluid mx-auto" alt="<?php echo $row['title']; ?>">
                         </div>
