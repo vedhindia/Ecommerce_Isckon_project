@@ -37,7 +37,8 @@ requireLogin();
             <!-- Top header  -->
             <!-- ============================================================== -->
             <!-- Start Navigation -->
-			<?php include('header.php')?>
+            <?php include('header.php')?>
+
 			<!-- End Navigation -->
 			<div class="clearfix"></div>
 			<!-- ============================================================== -->
@@ -51,12 +52,12 @@ requireLogin();
 						
 						<div class="col-lg-12 col-md-12 col-sm-12">
 							<div class="text-center">
-								<h2 class="breadcrumbs_title">My Order</h2>
+								<h2 class="breadcrumbs_title">My All Orders</h2>
 								<nav aria-label="breadcrumb">
 								  <ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="#"><i class="ti-home"></i></a></li>
 									<li class="breadcrumb-item"><a href="#">My Account</a></li>
-									<li class="breadcrumb-item active" aria-current="page">My Order</li>
+									<li class="breadcrumb-item active" aria-current="page">My Orders</li>
 								  </ol>
 								</nav>
 							</div>
@@ -68,18 +69,18 @@ requireLogin();
 			<!-- =========================== Breadcrumbs =================================== -->
 			
 			
-<!-- =========================== My Order =================================== -->
+			<!-- =========================== My All Orders =================================== -->
 <section class="gray">
     <div class="container">
         <div class="row">
-            
+        
             <div class="col-lg-4 col-md-3">
                 <nav class="dashboard-nav mb-10 mb-md-0">
                   <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                    <a class="list-group-item list-group-item-action dropright-toggle active" href="order.php">
+                    <a class="list-group-item list-group-item-action dropright-toggle" href="order.php">
                       My Order
                     </a>
-                    <a class="list-group-item list-group-item-action dropright-toggle" href="order-history.php">
+                    <a class="list-group-item list-group-item-action dropright-toggle active" href="order-history.php">
                       Order History
                     </a>
                     <a class="list-group-item list-group-item-action dropright-toggle" href="order-tracking.html">
@@ -94,7 +95,7 @@ requireLogin();
                     <a class="list-group-item list-group-item-action dropright-toggle" href="payment-methode.html">
                       Payment Methods
                     </a>
-                    <a class="list-group-item list-group-item-action dropright-toggle" href="login-signup.html">
+                    <a class="list-group-item list-group-item-action dropright-toggle" href="logout.php">
                       Logout
                     </a>
                   </div>
@@ -102,212 +103,88 @@ requireLogin();
             </div>
             
             <div class="col-lg-8 col-md-9">
-            <?php include 'admin/dbconnection.php';
-            $user_id = $_SESSION['user_id'];
             
-            // Query that properly joins orders, payment and products tables
-            $sql = "SELECT orders.*, payment.payment_id, payment.amount, payment.payment_status, 
-                    products.product_name, product_units.price, product_units.unit_value, product_units.unit_type
-                    FROM orders
-                    LEFT JOIN payment ON payment.user_id = orders.user_id AND payment.id = (
-                        SELECT id FROM payment WHERE payment.user_id = orders.user_id ORDER BY added_on DESC LIMIT 1
-                    )
-                    LEFT JOIN products ON products.id = orders.product_id
-                    LEFT JOIN product_units ON product_units.product_id = orders.product_id
-                    WHERE orders.user_id = $user_id
-                    ORDER BY orders.created_at DESC";
-                    
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                // output data of each row
-                while($row = $result->fetch_assoc()) {
-                    // Format date for display
-                    $orderDate = date('d M Y', strtotime($row['created_at']));
-            ?>
-                <div class="card-body bg-white mb-4">
-                    <div class="row">
-                        <div class="col-6 col-lg-3">
-                            <!-- Heading -->
-                            <h6 class="text-muted mb-1">Order No:</h6>
-                            <!-- Text -->
-                            <p class="mb-lg-0 font-size-sm font-weight-bold"><?php echo $row['id']; ?></p>
-                        </div>
-                        
-                        <div class="col-6 col-lg-3">
-                            <!-- Heading -->
-                            <h6 class="text-muted mb-1">Order date:</h6>
-                            <!-- Text -->
-                            <p class="mb-lg-0 font-size-sm font-weight-bold">
-                                <span><?php echo $orderDate; ?></span>
-                            </p>
-                        </div>
-                        
-                        <div class="col-6 col-lg-3">
-                            <!-- Heading -->
-                            <h6 class="text-muted mb-1">Status:</h6>
-                            <!-- Text -->
-                            <p class="mb-0 font-size-sm font-weight-bold"><?php echo $row['payment_status']; ?></p>
-                        </div>
-                        
-                        <div class="col-6 col-lg-3">
-                            <!-- Heading -->
-                            <h6 class="text-muted mb-1">Order Amount:</h6>
-                            <!-- Text -->
-                            <p class="mb-0 font-size-sm font-weight-bold">₹<?php echo $row['total']; ?></p>
-                        </div>
-                        
-                    </div>
-                </div>
-                
                 <!-- Order Items -->
-                <div class="card style-2 mb-4">
-                    <div class="card-header">
-                        <h4 class="mb-0">Order Item</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="item-groups">
-                        
-                            <!-- Single Items -->
-                            <li>
-                                <div class="row align-items-center">
-                                    <div class="col-4 col-md-3 col-xl-2">
-                                        <?php
-                                        // Get the product image
-                                        $product_id = $row['product_id'];
-                                        $imgQuery = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
-                                        $imgResult = $conn->query($imgQuery);
-                                        $imgPath = ($imgResult->num_rows > 0) ? $imgResult->fetch_assoc()['image_path'] : 'assets/img/fruits/2.png';
-                                        ?>
-                                        <a href="product.php?id=<?php echo $product_id; ?>">
-                                            <img src="admin/<?php echo $imgPath; ?>" alt="<?php echo $row['product_name']; ?>" class="img-fluid">
-                                        </a>
-                                    </div>
-                                    
-                                    <div class="col">
-                                        <!-- Title -->
-                                        <p class="mb-2 font-size-sm font-weight-bold">
-                                            <a class="text-body" href="product.php?id=<?php echo $product_id; ?>"><?php echo $row['product_name']; ?></a> <br>
-                                            <span class="theme-cl">₹<?php echo $row['price']; ?></span>
-                                        </p>
-
-                                        <!-- Text -->
-                                        <div class="font-size-sm text-muted">
-                                            Unit: <?php echo $row['unit_value'] . ' ' . $row['unit_type']; ?> <br>
-                                            <?php if(!empty($row['company'])): ?>
-                                            Company: <?php echo $row['company']; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- Total Items -->
-                <div class="card style-2 mb-4">
+                <div class="card style-2">
                     <div class="card-header">
                         <h4 class="mb-0">Total Order</h4>
                     </div>
                     <div class="card-body">
-                        <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
-                            <li class="list-group-item d-flex">
-                                <span>Subtotal</span>
-                                <span class="ml-auto">₹<?php echo $row['subtotal']; ?></span>
-                            </li>
-                        
-                            <li class="list-group-item d-flex">
-                                <span>Tax</span>
-                                <span class="ml-auto">₹<?php echo $row['tax']; ?></span>
-                            </li>
-                            
-                            <li class="list-group-item d-flex">
-                                <span>Shipping</span>
-                                <span class="ml-auto">₹<?php echo $row['shipping']; ?></span>
-                            </li>
-                            
-                            <li class="list-group-item d-flex font-size-lg font-weight-bold">
-                                <span>Total</span>
-                                <span class="ml-auto">₹<?php echo $row['total']; ?></span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- Shipping & Billing -->
-                <div class="card style-2">
-                    <div class="card-header">
-                        <h4 class="mb-0">Shipping & Billing Details</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 col-md-4">
-                                <!-- Heading -->
-                                <p class="mb-2 font-weight-bold">
-                                  Billing Address:
-                                </p>
-
-                                <p class="mb-7 mb-md-0">
-                                  <?php echo $row['first_name'] . ' ' . $row['last_name']; ?>, <br>
-                                  <?php echo $row['address1']; ?>, <br>
-                                  <?php if(!empty($row['address2'])): echo $row['address2'] . ', <br>'; endif; ?>
-                                  <?php echo $row['city'] . ', ' . $row['zip']; ?>, <br>
-                                  <?php echo $row['country']; ?>, <br>
-                                  <?php echo $row['phone']; ?>
-                                </p>
-                            </div>
-                          
-                            <div class="col-12 col-md-4">
-                                <!-- Heading -->
-                                <p class="mb-2 font-weight-bold">
-                                  Shipping Address:
-                                </p>
-
-                                <p class="mb-7 mb-md-0">
-                                  <?php echo $row['first_name'] . ' ' . $row['last_name']; ?>, <br>
-                                  <?php echo $row['address1']; ?>, <br>
-                                  <?php if(!empty($row['address2'])): echo $row['address2'] . ', <br>'; endif; ?>
-                                  <?php echo $row['city'] . ', ' . $row['zip']; ?>, <br>
-                                  <?php echo $row['country']; ?>, <br>
-                                  <?php echo $row['phone']; ?>
-                                </p>
-                            </div>
-                            
-                            <div class="col-12 col-md-4">
-                                <!-- Heading -->
-                                <p class="mb-2 font-weight-bold">
-                                  Shipping Method:
-                                </p>
-
-                                <p class="mb-4 text-gray-500">
-                                  Standard Shipping <br>
-                                  (5 - 7 days)
-                                </p>
-
-                                <!-- Heading -->
-                                <p class="mb-2 font-weight-bold">
-                                  Payment Method:
-                                </p>
-
-                                <p class="mb-0">
-                                  <?php echo (!empty($row['payment_id'])) ? 'Online Payment (Razorpay)' : 'Payment Pending'; ?>
-                                </p>
-                            </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Order No.</th>
+                                        <th scope="col">Order Date</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php 
+                                $user_id = $_SESSION['user_id'];
+                                
+                                // Query to fetch order history
+                                $sql = "SELECT orders.id as order_id, orders.created_at, orders.total, orders.payment_status, 
+                                        products.id as product_id, products.product_name 
+                                        FROM orders 
+                                        LEFT JOIN products ON products.id = orders.product_id 
+                                        WHERE orders.user_id = $user_id 
+                                        ORDER BY orders.created_at DESC";
+                                        
+                                $result = $conn->query($sql);
+                                
+                                if ($result->num_rows > 0) {
+                                    while($row = $result->fetch_assoc()) {
+                                        // Format date
+                                        $orderDate = date('d M Y', strtotime($row['created_at']));
+                                        
+                                        // Get product image
+                                        $product_id = $row['product_id'];
+                                        $imgQuery = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
+                                        $imgResult = $conn->query($imgQuery);
+                                        $imgPath = ($imgResult->num_rows > 0) ? $imgResult->fetch_assoc()['image_path'] : 'assets/img/vegetables/1.png';
+                                ?>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="tbl_cart_product">
+                                                <div class="tbl_cart_product_thumb m-0">
+                                                    <img src="admin/<?php echo $imgPath; ?>" class="img-fluid" alt="<?php echo $row['product_name']; ?>">
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td><?php echo $row['order_id']; ?></td>
+                                        <td><?php echo $orderDate; ?></td>
+                                        <td>₹<?php echo $row['total']; ?></td>
+                                        <td><?php echo $row['payment_status']; ?></td>
+                                        <td>
+                                            <?php if($row['payment_status'] == 'Delivered'): ?>
+                                                <a href="order-details.php?id=<?php echo $row['order_id']; ?>" class="btn btn-sm btn-theme">View Order</a>
+                                            <?php else: ?>
+                                                <a href="order-tracking.php?id=<?php echo $row['order_id']; ?>" class="btn btn-sm btn-theme">Track Order</a>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="6" class="text-center">No order history found</td></tr>';
+                                }
+                                ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <?php
-                }
-            } else {
-                echo "<div class='alert alert-info'>No orders found. Start shopping now!</div>";
-            }
-            ?>
-            </div>
+                
+            </div>                        
             
         </div>
     </div>
 </section>
-<!-- =========================== My Order =================================== -->
+<!-- =========================== My All Orders =================================== -->
 
 			
 			<!-- ============================ Call To Action ================================== --> 
@@ -337,9 +214,16 @@ requireLogin();
 			</section>
 			<!-- ============================ Call To Action End ================================== -->
 			
-			<!-- ============================ Footer Start ================================== -->
+			
+
+
+            <!-- ============================ Footer Start ================================== -->
 			<?php include('footer.php')?>
 			<!-- ============================ Footer End ================================== -->
+
+
+
+
 			
 			<!-- cart -->
 			<!-- Switcher Start -->
@@ -639,5 +523,4 @@ requireLogin();
 
 	</body>
 
-<!-- Mirrored from themezhub.net/odex-live/odex/order.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Apr 2025 05:34:09 GMT -->
 </html>

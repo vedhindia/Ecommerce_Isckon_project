@@ -1,16 +1,49 @@
+<?php
+session_start();
+include_once 'dbconnection.php';
+if (empty($_SESSION['admin_session'])) {
+    header('Location:login.php');
+}
+
+// Check for success message from add/edit operations
+$message = '';
+if(isset($_GET['success']) && $_GET['success'] == '1') {
+    $message = "Image added successfully!";
+} else if(isset($_GET['edited']) && $_GET['edited'] == '1') {
+    $message = "Image updated successfully!";
+} else if(isset($_GET['deleted']) && $_GET['deleted'] == '1') {
+    $message = "Image deleted successfully!";
+}
+
+$search = "";
+$whereClause = "";
+if (!empty($_GET['search'])) {
+    $search = mysqli_real_escape_string($conn, $_GET['search']);
+    $whereClause = "WHERE image_title LIKE '%$search%'";
+}
+
+$entries_per_page = isset($_GET['entries']) ? (int)$_GET['entries'] : 10;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$current_page = max(1, $current_page);
+$offset = ($current_page - 1) * $entries_per_page;
+
+$total_query = "SELECT COUNT(*) AS total FROM gallery $whereClause";
+$total_result = mysqli_query($conn, $total_query);
+$total_rows = mysqli_fetch_assoc($total_result)['total'];
+$total_pages = ceil($total_rows / $entries_per_page);
+
+$query = "SELECT * FROM gallery $whereClause ORDER BY id DESC LIMIT $entries_per_page OFFSET $offset";
+$result = mysqli_query($conn, $query);
+?>
 <!DOCTYPE html>
-<!--[if IE 8 ]><html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
-<!--<![endif]-->
 
-
-<!-- Mirrored from themesflat.co/html/remos/gallery.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 02 Apr 2025 05:37:01 GMT -->
 <head>
     <!-- Basic Page Needs -->
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
-    <title>gallery</title>
+    <title>Iskcon Ravet</title>
 
     <meta name="author" content="themesflat.com">
 
@@ -24,8 +57,6 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-
-
     <!-- Font -->
     <link rel="stylesheet" href="font/fonts.css">
 
@@ -37,7 +68,36 @@
     <link rel="apple-touch-icon-precomposed" href="images/favicon.png">
 
 </head>
-
+<style>
+ .table-title1
+  {
+    background-color: rgb(237, 241, 245);
+    padding: 10px;
+    gap:200px;
+ 
+ }
+ .wg-table.table-all-category .product-item > .flex > div:first-child {
+    width: 260px;
+    flex-shrink: 0;
+}
+.wg-table.table-all-category .product-item > .flex > div {
+    width: 40%;
+}
+.wg-table.table-all-category > * {
+    min-width: 850px;
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+</style>
 <body class="body">
 
     <!-- #wrapper -->
@@ -45,7 +105,7 @@
         <!-- #page -->
         <div id="page" class="">
             <!-- layout-wrap -->
-           <div class="layout-wrap">
+            <div class="layout-wrap">
                 <!-- preload -->
                 <div id="preload" class="preload-container">
                     <div class="preloading">
@@ -60,7 +120,7 @@
                 <div class="section-content-right">
                     <!-- header-dashboard -->
                     <?php include('topbar.php'); ?>
-                    <!-- /header-dashboard -->
+
                     <!-- /header-dashboard -->
                     <!-- main-content -->
                     <div class="main-content">
@@ -69,10 +129,12 @@
                             <!-- main-content-wrap -->
                             <div class="main-content-wrap">
                                 <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                                    <h3>All Gallery</h3>
+                                    <h3>Gallery</h3>
                                     <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                                         <li>
-                                            <a href="index-2.html"><div class="text-tiny">Dashboard</div></a>
+                                            <a href="index.php">
+                                                <div class="text-tiny">Dashboard</div>
+                                            </a>
                                         </li>
                                         <li>
                                             <i class="icon-chevron-right"></i>
@@ -82,170 +144,117 @@
                                         </li>
                                     </ul>
                                 </div>
+                                
+                                <!-- Display success message if it exists -->
+                                <?php if(!empty($message)): ?>
+                                <div class="alert alert-success">
+                                    <?php echo $message; ?>
+                                </div>
+                                <?php endif; ?>
+                                
                                 <!-- all-gallery -->
-                                <div class="all-gallery-wrap">
-                                    <div class="wg-box left flex-grow">
-                                        <div class="flex items-center justify-between gap10 flex-wrap">
-                                            <div class="flex items-center flex-wrap gap10">
-                                                <div class="tf-button-funtion">
-                                                    <i class="icon-upload-cloud"></i>
-                                                    <div class="body-title">Upload</div>
+                                <div class="wg-box">
+                                    <div class="flex items-center justify-between gap10 flex-wrap">
+                                        <div class="wg-filter flex-grow">
+                                            <div class="show">
+                                                <div class="text-tiny">Showing</div>
+                                                <div class="select">
+                                                    <select class="" onchange="window.location.href='?entries='+this.value+'&search=<?php echo $search; ?>'">
+                                                        <option value="10" <?php echo $entries_per_page == 10 ? 'selected' : ''; ?>>10</option>
+                                                        <option value="20" <?php echo $entries_per_page == 20 ? 'selected' : ''; ?>>20</option>
+                                                        <option value="30" <?php echo $entries_per_page == 30 ? 'selected' : ''; ?>>30</option>
+                                                    </select>
                                                 </div>
-                                                <div class="tf-button-funtion">
-                                                    <i class="icon-download-cloud"></i>
-                                                    <div class="body-title">Download</div>
-                                                </div>
-                                                <div class="tf-button-funtion">
-                                                    <i class="icon-folder-plus"></i>
-                                                    <div class="body-title">Create folder</div>
-                                                </div>
-                                                <div class="tf-button-funtion">
-                                                    <i class="icon-filter"></i>
-                                                    <div class="body-title">Filter</div>
-                                                </div>
-                                                <div class="tf-button-funtion">
-                                                    <i class="icon-eye"></i>
-                                                    <div class="body-title">View in</div>
-                                                </div>
+                                                <div class="text-tiny">entries</div>
                                             </div>
-                                            <form class="form-search w286">
+                                            <form class="form-search" method="GET" action="">
                                                 <fieldset class="name">
-                                                    <input type="text" placeholder="Search here..." class="" name="name" tabindex="2" value="" aria-required="true" required="">
+                                                    <input type="text" placeholder="Search here..." class="" name="search" value="<?php echo htmlspecialchars($search); ?>" tabindex="2" aria-required="true">
                                                 </fieldset>
                                                 <div class="button-submit">
                                                     <button class="" type="submit"><i class="icon-search"></i></button>
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="wrap-title flex items-center justify-between gap20 flex-wrap">
-                                            <div class="body-title">File</div>
-                                            <div class="flex items-center gap20">
-                                                <div class="select style-default">
-                                                    <select class="">
-                                                        <option>Sort</option>
-                                                        <option>Name</option>
-                                                        <option>Day</option>
-                                                    </select>
-                                                </div>
-                                                <div class="grid-list-style">
-                                                    <div class="button-grid-style"><i class="icon-grid"></i></div>
-                                                    <div class="button-list-style"><i class="icon-list"></i></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="wrap-gallery-item">
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-1.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">The Pet Marketing Agency | MarketPlace</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-2.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Three Dog Bakery Itty Bitty Bones Baked Dog...</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-3.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Roll over image to zoom in Rachael Ray Nutrish Just...</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-4.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Feed for dogs and cats – Brit</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-5.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Halo Purely For Pets Halo Holistic Dog Food, Chicken & Chicken Liver Recipe, Dry Dog Food Bag, Adult Formula, 14-lb</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-6.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Best Grain Free Dry Dog Food 2023 | DogFoodAdvisor</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-7.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Innovative pet food packaging</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-8.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Calico need a design for dry cat food bag (2kg) | Product packaging contest</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-9.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Calico need a design for dry cat food bag (2kg)| concursos de Packaging y Envases</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-10.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Biscoito Premier Cookie para Cães Filhotes - 250g</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-11.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Dog Food (Puppy) with Fresh Chicken for Medium and Large Breeds 5kg *2</div>
-                                            </a>
-                                            <a href="#" class="gallery-item">
-                                                <div class="image">
-                                                    <img src="images/images-section/all-gallery-12.png" alt="">
-                                                </div>
-                                                <div class="text-tiny">Arden Grange Adult Dry Dog Food Chicken and Rice, 12 kg (Pack of 1)</div>
-                                            </a>
-                                        </div>
+                                        <a class="tf-button style-1 w208" href="new-gallery.php"><i class="icon-plus"></i>Add new</a>
                                     </div>
-                                    <div class="wg-box right">
-                                        <div class="image">
-                                            <img src="images/images-section/all-gallery.png" alt="">
-                                        </div>
-                                        <div class="">
-                                            <div class="body-title mb-4">Name</div>
-                                            <div class="body-text">image 8</div>
-                                        </div>
-                                        <div class="divider"></div>
-                                        <div class="">
-                                            <div class="body-title mb-4">Uploaded at</div>
-                                            <div class="body-text">20 Nov 2023 - 2:30 PM</div>
-                                        </div>
-                                        <div class="divider"></div>
-                                        <div class="">
-                                            <div class="body-title mb-4">Modified at</div>
-                                            <div class="body-text">20 Nov 2023 - 2:30 PM</div>
-                                        </div>
-                                        <div class="divider"></div>
-                                        <div class="">
-                                            <div class="body-title mb-10">Full URL</div>
-                                            <div class="box-coppy">
-                                                <div class="coppy-content body-text">https://themeforest.net/user/themesflat</div>
-                                                <i class="icon-copy button-coppy"></i>
-                                            </div>
-                                        </div>
+                                    <div class="wg-table table-all-category">
+                                        <ul class="table-title1 flex gap mb-14">
+                                            <li>
+                                                <div class="body-title">Sr No.</div>
+                                            </li>
+                                            <li>
+                                                <div class="body-title">Image</div>
+                                            </li>
+                                            <li>
+                                                <div class="body-title">Image Title</div>
+                                            </li>
+                                            <li>
+                                                <div class="body-title">Action</div>
+                                            </li>
+                                        </ul>
+                                        <ul class="flex flex-column">
+                                            <?php
+                                            $sr_no = $offset + 1;
+                                            if (mysqli_num_rows($result) > 0) {
+                                                while ($row = mysqli_fetch_assoc($result)) { ?>
+                                                    <li class="product-item gap14">
+                                                        <div class="flex items-center flex-grow">
+                                                            <div class="sr-number">
+                                                                <span class="body-title-2"><?php echo $sr_no++; ?></span>
+                                                            </div>
+                                                            <div class="image">
+                                                                <img src="uploads/gallery/<?php echo htmlspecialchars($row['image_path']); ?>" alt="<?php echo htmlspecialchars($row['image_title']); ?>" width="100">
+                                                            </div>
+                                                            <div class="name">
+                                                                <a href="#" class="body-title-2"><?php echo htmlspecialchars($row['image_title']); ?></a>
+                                                            </div>
+                                                            <div class="list-icon-function">
+                                                                <div class="item trash"><a href="delete-gallery.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this image?');"><i class="icon-trash-2"></i></a></div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php }
+                                            } else { ?>
+                                                <li class="product-item gap14">
+                                                    <div class="flex items-center justify-center gap20 flex-grow">
+                                                        <div class="name">
+                                                            <span class="body-title-2">No gallery images found</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            <?php } ?>
+                                        </ul>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="flex items-center justify-between flex-wrap gap10">
+                                        <div class="text-tiny">Showing <?php echo min($entries_per_page, $total_rows); ?> of <?php echo $total_rows; ?> entries</div>
+                                        <ul class="wg-pagination">
+                                            <li>
+                                                <a href="?page=<?php echo max(1, $current_page - 1); ?>&entries=<?php echo $entries_per_page; ?>&search=<?php echo $search; ?>"><i class="icon-chevron-left"></i></a>
+                                            </li>
+                                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                                <li <?php echo $i == $current_page ? 'class="active"' : ''; ?>>
+                                                    <a href="?page=<?php echo $i; ?>&entries=<?php echo $entries_per_page; ?>&search=<?php echo $search; ?>"><?php echo $i; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+                                            <li>
+                                                <a href="?page=<?php echo min($total_pages, $current_page + 1); ?>&entries=<?php echo $entries_per_page; ?>&search=<?php echo $search; ?>"><i class="icon-chevron-right"></i></a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <!-- /all-gallery -->
                             </div>
                             <!-- /main-content-wrap -->
                         </div>
+
                         <!-- /main-content-wrap -->
                         <!-- bottom-page -->
                         <div class="bottom-page">
-                            <div class="body-text">Copyright © 2025 Iskcon Ravet . Design with</div>
-                          
-                            <div class="body-text">by <a href="https://designzfactory.in/">designzfactory </a> All rights reserved.</div>
+                            <div class="body-text">Copyright © 2025 Iskcon Ravet. Design</div>
+                           
+                            <div class="body-text">by <a href="https://designzfactory.in/">designzfactory</a> All rights reserved.</div>
                         </div>
                         <!-- /bottom-page -->
                     </div>
@@ -270,6 +279,4 @@
 
 </body>
 
-
-<!-- Mirrored from themesflat.co/html/remos/gallery.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 02 Apr 2025 05:37:06 GMT -->
 </html>

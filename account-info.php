@@ -1,3 +1,11 @@
+<?php
+include 'admin/dbconnection.php';
+include 'check-auth.php';
+
+// Require login for this page
+requireLogin();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,6 +41,7 @@
         <!-- ============================================================== -->
         <!-- Start Navigation -->
         <?php include('header.php')?>
+
         <!-- End Navigation -->
         <div class="clearfix"></div>
         <!-- ============================================================== -->
@@ -46,12 +55,12 @@
 
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="text-center">
-                            <h2 class="breadcrumbs_title">News & Articles</h2>
+                            <h2 class="breadcrumbs_title">Account Settings</h2>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#"><i class="ti-home"></i></a></li>
-                                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Blogs</li>
+                                    <li class="breadcrumb-item"><a href="#">My Account</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Account Settings</li>
                                 </ol>
                             </nav>
                         </div>
@@ -63,93 +72,174 @@
         <!-- =========================== Breadcrumbs =================================== -->
 
 
-      
+        <!-- =========================== Account Settings =================================== -->
+        <section class="gray">
+            <div class="container">
+                <div class="row">
 
+                    <div class="col-lg-4 col-md-3">
+                        <nav class="dashboard-nav mb-10 mb-md-0">
+                            <div class="list-group list-group-sm list-group-strong list-group-flush-x">
+                                <a class="list-group-item list-group-item-action dropright-toggle" href="order.php">
+                                    My Order
+                                </a>
+                                <a class="list-group-item list-group-item-action dropright-toggle"
+                                    href="order-history.php">
+                                    Order History
+                                </a>
+                                <a class="list-group-item list-group-item-action dropright-toggle"
+                                    href="order-tracking.php">
+                                    Order Tracking
+                                </a>
+                                <a class="list-group-item list-group-item-action dropright-toggle" href="wishlist.php">
+                                    Wishlist
+                                </a>
+                                <a class="list-group-item list-group-item-action dropright-toggle active"
+                                    href="account-info.php">
+                                    Account Settings
+                                </a>
+                                <a class="list-group-item list-group-item-action dropright-toggle"
+                                    href="payment-methode.html">
+                                    Payment Methods
+                                </a>
+                                <a class="list-group-item list-group-item-action dropright-toggle" href="logout.php">
+                                    Logout
+                                </a>
+                            </div>
+                        </nav>
+                    </div>
 
-       <!-- =========================== News & Articles =================================== -->
-<section class="gray">
-    <div class="container">
-        <div class="row">
-        <?php include 'admin/dbconnection.php';
-            // Query to get blogs with their featured images
-            $sql = "SELECT b.*, bi.image_path 
-                   FROM blogs b
-                   LEFT JOIN blog_images bi ON b.id = bi.blog_id AND bi.is_featured = 1
-                   WHERE b.status = 'published'
-                   ORDER BY b.created_at DESC";
-            $result = $conn->query($sql);
-            
-            if ($result->num_rows > 0) {
-                // output data of each row
-                while($row = $result->fetch_assoc()) {
-                    // Default image if no featured image is available
-                    $imagePath = !empty($row['image_path']) ? $row['image_path'] : 'assets/img/offer-1.jpg';
-                    
-                    // Format the date
-                    $date = new DateTime($row['created_at']);
-                    $now = new DateTime();
-                    $interval = $date->diff($now);
-                    
-                    if ($interval->days == 0) {
-                        $timeAgo = "today";
-                    } elseif ($interval->days == 1) {
-                        $timeAgo = "yesterday";
-                    } else {
-                        $timeAgo = $interval->days . " days ago";
-                    }
-                    
-                    // Limit excerpt to approximately two lines (around 150 characters)
-                    $shortExcerpt = !empty($row['excerpt']) ? $row['excerpt'] : strip_tags($row['content']);
-                    $twoLineExcerpt = substr($shortExcerpt, 0, 150);
-                    if(strlen($shortExcerpt) > 150) {
-                        $twoLineExcerpt .= '...';
-                    }
-            ?>
-            <!-- Single Blog -->
-            <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
-                <article class="post-grid-layout">
-                    <a href="blog-detail.html?id=<?php echo $row['id']; ?>">
-                        <div class="post-article-header">
-                            <img src="admin/<?php echo $imagePath; ?>" class="img-fluid mx-auto" alt="<?php echo $row['title']; ?>">
-                        </div>
-                    </a>
-                    <div class="post-article box-inner">
-                        <div class="post-grid-caption-header">
-                            <span class="post-article-cat theme-bg">Blog</span>
-                            <h4 class="entry-title">
-                                <a href="blog-detail.html?id=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a>
-                            </h4>
-                            <div class="post-short-des">
-                                <?php echo $twoLineExcerpt; ?>
+                    <div class="col-lg-8 col-md-9">
+                        <!-- Total Items -->
+                        <div class="card style-2">
+                            <div class="card-header">
+                                <h4 class="mb-0">Account Detail</h4>
+                            </div>
+                            <div class="card-body">
+
+							<?php
+							$user_id = $_SESSION['user_id'];
+
+                                                   $sql = "SELECT * FROM  users WHERE id=$user_id";
+                                                        $result = $conn->query($sql);
+
+                                                        while ($row = $result->fetch_assoc()) {
+                                                        ?>
+                                <form class="submit-page" method="POST" action="update_profile.php">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <!-- First Name -->
+                                            <div class="form-group">
+                                                <label>First Name *</label>
+                                                <input class="form-control" type="text" name="first_name"
+                                                    placeholder="First Name *" value="<?php echo $row['first_name']; ?>" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <!-- Last Name -->
+                                            <div class="form-group">
+                                                <label>Last Name *</label>
+                                                <input class="form-control" type="text" name="last_name"
+                                                    placeholder="Last Name *" value="<?php echo $row['last_name']; ?>" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <!-- Email -->
+                                            <div class="form-group">
+                                                <label>Email Address *</label>
+                                                <input class="form-control" type="email" name="email"
+                                                    placeholder="Email Address *" value="<?php echo $row['email']; ?>" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <!-- Current Password -->
+                                            <div class="form-group">
+                                                <label> Password *</label>
+                                                <input class="form-control" type="password" name="current_password"
+                                                    placeholder="Current Password *" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <!-- Phone -->
+                                            <div class="form-group">
+                                                <label>Phone</label>
+                                                <input class="form-control" type="tel" name="phone"
+                                                    placeholder="Phone Number">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <!-- Gender -->
+                                            <div class="form-group mb-8">
+                                                <label>Gender</label>
+                                                <div class="btn-group-toggle mt-2 d-flex bd-highlight">
+                                                    <div class="mr-2">
+                                                        <input id="male" class="radio-custom" name="gender" type="radio"
+                                                            value="male">
+                                                        <label for="male" class="radio-custom-label">Male</label>
+                                                    </div>
+                                                    <div class="ml-1">
+                                                        <input id="female" class="radio-custom" name="gender"
+                                                            type="radio" value="female">
+                                                        <label for="female" class="radio-custom-label">Female</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <!-- Address -->
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <textarea class="form-control" name="address"
+                                                    placeholder="Your Address"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <!-- City -->
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                <input class="form-control" type="text" name="city" placeholder="City">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <!-- State -->
+                                            <div class="form-group">
+                                                <label>State</label>
+                                                <input class="form-control" type="text" name="state"
+                                                    placeholder="State">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <!-- Pincode -->
+                                            <div class="form-group">
+                                                <label>Pincode</label>
+                                                <input class="form-control" type="text" name="pincode"
+                                                    placeholder="Pincode">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <button class="btn btn-dark" type="submit">Save Changes</button>
+                                        </div>
+                                    </div>
+                                </form>
+								<?php } ?>
                             </div>
                         </div>
                     </div>
-                    <div class="post-article-footer">
-                        <div class="post-author">
-                            <img src="assets/img/user-3.jpg" class="img-fluid" alt="">
-                            <a href="#" class="theme-cl">
-                                <?php echo !empty($row['author']) ? $row['author'] : 'Admin'; ?>
-                            </a>
-                        </div>
-                        <span><i class="ti-calendar mr-1"></i><?php echo $timeAgo; ?></span>
-                    </div>
-                </article>
+
+                </div>
             </div>
-            <?php
-                }
-            } else {
-                echo "<div class='col-12 text-center'><p>No blog posts found.</p></div>";
-            }
-            ?>
-            
-            <div class="col-md-12 col-md-12 text-center">
-                <a class="btn btn-theme rounded" href="#">Load More Blogs<i
-                        class="ml-2 fa fa-spinner fa-spin"></i> </a>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- =========================== News & Articles =================================== -->
+        </section>
+        <!-- =========================== Account Settings =================================== -->
 
 
         <!-- ============================ Call To Action ================================== -->
@@ -182,7 +272,6 @@
 
         <!-- ============================ Footer Start ================================== -->
         <?php include('footer.php')?>
-
         <!-- ============================ Footer End ================================== -->
 
         <!-- cart -->
@@ -510,5 +599,7 @@
     <!-- ============================================================== -->
 
 </body>
+
+<!-- Mirrored from themezhub.net/odex-live/odex/account-info.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 01 Apr 2025 05:34:09 GMT -->
 
 </html>
