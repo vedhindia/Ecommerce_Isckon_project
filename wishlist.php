@@ -78,15 +78,15 @@ requireLogin();
                     <div class="col-lg-4 col-md-3">
                         <nav class="dashboard-nav mb-10 mb-md-0">
                             <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                                <a class="list-group-item list-group-item-action dropright-toggle" href="order.html">
+                                <a class="list-group-item list-group-item-action dropright-toggle" href="order.php">
                                     My Order
                                 </a>
                                 <a class="list-group-item list-group-item-action dropright-toggle"
-                                    href="order-history.html">
+                                    href="order-history.php">
                                     Order History
                                 </a>
                                 <a class="list-group-item list-group-item-action dropright-toggle"
-                                    href="order-tracking.html">
+                                    href="order-tracking.php">
                                     Order Tracking
                                 </a>
                                 <a class="list-group-item list-group-item-action dropright-toggle active"
@@ -94,7 +94,7 @@ requireLogin();
                                     Wishlist
                                 </a>
                                 <a class="list-group-item list-group-item-action dropright-toggle"
-                                    href="account-info.html">
+                                    href="account-info.php">
                                     Account Settings
                                 </a>
                                 <a class="list-group-item list-group-item-action dropright-toggle"

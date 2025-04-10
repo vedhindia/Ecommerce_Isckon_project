@@ -1,10 +1,3 @@
-<?php
-include 'admin/dbconnection.php';
-include 'check-auth.php';
-
-// Require login for this page
-requireLogin();
-?>
 <!DOCTYPE html>
 <html lang="en">
 	
@@ -37,8 +30,7 @@ requireLogin();
             <!-- Top header  -->
             <!-- ============================================================== -->
             <!-- Start Navigation -->
-            <?php include('header.php')?>
-
+		<?php include 'header.php' ?>
 			<!-- End Navigation -->
 			<div class="clearfix"></div>
 			<!-- ============================================================== -->
@@ -46,18 +38,18 @@ requireLogin();
 			<!-- ============================================================== -->
 			
 			<!-- =========================== Breadcrumbs =================================== -->
-			<div class="breadcrumbs_wrap dark">
+			<div class="breadcrumbs_wrap gray">
 				<div class="container">
 					<div class="row align-items-center">
 						
-						<div class="col-lg-12 col-md-12 col-sm-12">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-12">
 							<div class="text-center">
-								<h2 class="breadcrumbs_title">My All Orders</h2>
+								<h2 class="breadcrumbs_title">racking order: ODEXORD149</h2>
 								<nav aria-label="breadcrumb">
 								  <ol class="breadcrumb">
 									<li class="breadcrumb-item"><a href="#"><i class="ti-home"></i></a></li>
-									<li class="breadcrumb-item"><a href="#">My Account</a></li>
-									<li class="breadcrumb-item active" aria-current="page">My Orders</li>
+									<li class="breadcrumb-item"><a href="#">Shop</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Racking Order</li>
 								  </ol>
 								</nav>
 							</div>
@@ -68,162 +60,144 @@ requireLogin();
 			</div>
 			<!-- =========================== Breadcrumbs =================================== -->
 			
+			<!-- =========================== Add To Cart =================================== -->
+			<section>
+				<div class="container">
+					<div class="row">
+					
+						<div class="col-lg-4 col-md-3">
+							<nav class="dashboard-nav mb-10 mb-md-0">
+							  <div class="list-group list-group-sm list-group-strong list-group-flush-x">
+								<a class="list-group-item list-group-item-action dropright-toggle" href="order.php">
+								  My Order
+								</a>
+								<a class="list-group-item list-group-item-action dropright-toggle" href="order-history.php">
+								  Order History
+								</a>
+								<a class="list-group-item list-group-item-action dropright-toggle active" href="order-tracking.php">
+								  Order Tracking
+								</a>
+								<a class="list-group-item list-group-item-action dropright-toggle" href="wishlist.php">
+								  Wishlist
+								</a>
+								<a class="list-group-item list-group-item-action dropright-toggle" href="account-info.php">
+								  Account Settings
+								</a>
+								<a class="list-group-item list-group-item-action dropright-toggle" href="payment-methode.php">
+								  Payment Methods
+								</a>
+								<a class="list-group-item list-group-item-action dropright-toggle" href="logout.php">
+								  Logout
+								</a>
+							  </div>
+							</nav>
+						</div>
+						
+						<div class="col-lg-8 col-md-9 col-sm-12 col-12">
+							<div class="checked-shop">
+							
+								<div class="row">
+									<div class="col-lg-4 col-md-4 col-sm-12">
+										<div class="ship_status_box"><span class="text-bold mr-2">Shipped via:</span>UPS</div>
+									</div>
+									<div class="col-lg-4 col-md-4 col-sm-12">
+										<div class="ship_status_box"><span class="text-bold mr-2">Status:</span>Processing</div>
+									</div>
+									<div class="col-lg-4 col-md-4 col-sm-12">
+										<div class="ship_status_box"><span class="text-bold mr-2">Deliverd:</span>20 August 2020</div>
+									</div>
+								</div>
+								
+								<div class="row">
+									<div class="col-lg-12 col-md-12 col-sm-12">
+										<ul class="track_order_list mt-4">
+										
+											<!-- Single List -->
+											<li class="complete">
+												<div class="trach_single_list">
+													<div class="trach_icon_list"><i class="ti-write"></i></div>
+													<div class="track_list_caption">
+														<h4 class="mb-0">Order Placed</h4>
+														<p>We have received your order</p>
+													</div>
+												</div>
+											</li>
+											
+											<!-- Single List -->
+											<li class="processing">
+												<div class="trach_single_list">
+													<div class="trach_icon_list"><i class="ti-package"></i></div>
+													<div class="track_list_caption">
+														<h4 class="mb-0">Order Confirmed</h4>
+														<p>Your Order has been confirmed.</p>
+													</div>
+												</div>
+											</li>
+											
+											<!-- Single List -->
+											<li>
+												<div class="trach_single_list">
+													<div class="trach_icon_list"><i class="ti-thumb-up"></i></div>
+													<div class="track_list_caption">
+														<h4 class="mb-0">Order Processed</h4>
+														<p>We are preparing your order.</p>
+													</div>
+												</div>
+											</li>
+											
+											<!-- Single List -->
+											<li>
+												<div class="trach_single_list">
+													<div class="trach_icon_list"><i class="ti-gift"></i></div>
+													<div class="track_list_caption">
+														<h4 class="mb-0">Ready to Pickup</h4>
+														<p>Your order is ready for pickup.</p>
+													</div>
+												</div>
+											</li>
+											
+										</ul>
+									</div>
+								</div>
+							
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</section>
+			<!-- =========================== Add To Cart =================================== -->
 			
-			<!-- =========================== My All Orders =================================== -->
-<section class="gray">
-    <div class="container">
-        <div class="row">
-        
-            <div class="col-lg-4 col-md-3">
-                <nav class="dashboard-nav mb-10 mb-md-0">
-                  <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                    <a class="list-group-item list-group-item-action dropright-toggle" href="order.php">
-                      My Order
-                    </a>
-                    <a class="list-group-item list-group-item-action dropright-toggle active" href="order-history.php">
-                      Order History
-                    </a>
-                    <a class="list-group-item list-group-item-action dropright-toggle" href="order-tracking.php">
-                      Order Tracking
-                    </a>
-                    <a class="list-group-item list-group-item-action dropright-toggle" href="wishlist.php">
-                      Wishlist
-                    </a>
-                    <a class="list-group-item list-group-item-action dropright-toggle" href="account-info.php">
-                      Account Settings
-                    </a>
-                    <a class="list-group-item list-group-item-action dropright-toggle" href="payment-methode.html">
-                      Payment Methods
-                    </a>
-                    <a class="list-group-item list-group-item-action dropright-toggle" href="logout.php">
-                      Logout
-                    </a>
-                  </div>
-                </nav>
-            </div>
-            
-            <div class="col-lg-8 col-md-9">
-            
-                <!-- Order Items -->
-                <div class="card style-2">
-                    <div class="card-header">
-                        <h4 class="mb-0">Total Order</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Order No.</th>
-                                        <th scope="col">Order Date</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php 
-                                $user_id = $_SESSION['user_id'];
-                                
-                                // Query to fetch order history
-                                $sql = "SELECT orders.id as order_id, orders.created_at, orders.total, orders.payment_status, 
-                                        products.id as product_id, products.product_name 
-                                        FROM orders 
-                                        LEFT JOIN products ON products.id = orders.product_id 
-                                        WHERE orders.user_id = $user_id 
-                                        ORDER BY orders.created_at DESC";
-                                        
-                                $result = $conn->query($sql);
-                                
-                                if ($result->num_rows > 0) {
-                                    while($row = $result->fetch_assoc()) {
-                                        // Format date
-                                        $orderDate = date('d M Y', strtotime($row['created_at']));
-                                        
-                                        // Get product image
-                                        $product_id = $row['product_id'];
-                                        $imgQuery = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
-                                        $imgResult = $conn->query($imgQuery);
-                                        $imgPath = ($imgResult->num_rows > 0) ? $imgResult->fetch_assoc()['image_path'] : 'assets/img/vegetables/1.png';
-                                ?>
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="tbl_cart_product">
-                                                <div class="tbl_cart_product_thumb m-0">
-                                                    <img src="admin/<?php echo $imgPath; ?>" class="img-fluid" alt="<?php echo $row['product_name']; ?>">
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <td><?php echo $row['order_id']; ?></td>
-                                        <td><?php echo $orderDate; ?></td>
-                                        <td>₹<?php echo $row['total']; ?></td>
-                                        <td><?php echo $row['payment_status']; ?></td>
-                                        <td>
-                                            <?php if($row['payment_status'] == 'Delivered'): ?>
-                                                <a href="order-details.php?id=<?php echo $row['order_id']; ?>" class="btn btn-sm btn-theme">View Order</a>
-                                            <?php else: ?>
-                                                <a href="order-tracking.php?id=<?php echo $row['order_id']; ?>" class="btn btn-sm btn-theme">Track Order</a>
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
-                                <?php
-                                    }
-                                } else {
-                                    echo '<tr><td colspan="6" class="text-center">No order history found</td></tr>';
-                                }
-                                ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>                        
-            
-        </div>
-    </div>
-</section>
-<!-- =========================== My All Orders =================================== -->
-
+			<!-- ============================ Call To Action ================================== --> 
+			<section class="theme-bg call_action_wrap-wrap">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							
+							<div class="call_action_wrap">
+								<div class="call_action_wrap-head">
+									<h3>Do You Have Questions ?</h3>
+									<span>We'll help you to grow your career and growth.</span>
+								</div>
+								<div class="newsletter_box">
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="Subscribe here...">
+										<div class="input-group-append">
+										<button class="btn search_btn" type="button"><i class="fas fa-arrow-alt-circle-right"></i></button>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- ============================ Call To Action End ================================== -->
 			
-		<!-- ============================ Call To Action ================================== -->
-<section class="theme-bg call_action_wrap-wrap">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                
-                <div class="call_action_wrap">
-                    <div class="call_action_wrap-head">
-                        <h3>Stay Connected With Our Temple</h3>
-                        <span>Receive updates about upcoming events, festivals, and special offerings</span>
-                    </div>
-                    <div class="newsletter_box">
-                        <form action="subscribe.php" method="post">
-                            <div class="input-group">
-                                <input type="email" name="email" class="form-control" placeholder="Enter your email address" required>
-                                <div class="input-group-append">
-                                    <button class="btn search_btn" type="submit"><i class="fas fa-arrow-alt-circle-right"></i></button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</section>
-<!-- ============================ Call To Action End ================================== -->	
-
-
-            <!-- ============================ Footer Start ================================== -->
-			<?php include('footer.php')?>
+			<!-- ============================ Footer Start ================================== -->
+            <?php include 'footer.php' ?>
 			<!-- ============================ Footer End ================================== -->
-
-
-
-
 			
 			<!-- cart -->
 			<!-- Switcher Start -->
@@ -516,10 +490,15 @@ requireLogin();
 				document.getElementById("leftMenu").style.display = "none";
 			}
 		</script>
-
-		<!-- ============================================================== -->
-		<!-- This page plugins -->
-		<!-- ============================================================== -->
+		
+		<script>
+			function openFilterSearch() {
+				document.getElementById("filter_search").style.display = "block";
+			}
+			function closeFilterSearch() {
+				document.getElementById("filter_search").style.display = "none";
+			}
+		</script>
 
 	</body>
 
