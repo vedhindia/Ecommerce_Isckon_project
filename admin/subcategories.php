@@ -68,6 +68,28 @@ $categoryResult = mysqli_query($conn, $categoryQuery);
     <!-- Favicon -->
     <link rel="shortcut icon" href="images/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="images/favicon.png">
+    <style>
+        .form-select {
+    display: block;
+    width: 100%;
+    padding: 14px 22px;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color:rgb(114, 114, 114);
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 12px;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+    </style>
 </head>
 
 <body class="body">

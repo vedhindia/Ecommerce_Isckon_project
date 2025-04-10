@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include_once 'dbconnection.php';
@@ -67,6 +68,30 @@ $result = mysqli_query($conn, $query);
     <link rel="shortcut icon" href="images/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="images/favicon.png">
 
+    <style>
+ .table-title1
+  {
+    background-color: rgb(237, 241, 245);
+    padding: 10px;
+    gap:130px;
+ 
+ }
+
+ .wg-table.table-product-list .product-item > .flex > div {
+    width: 100%;
+}
+.wg-table.table-product-list > * {
+    min-width: 1080px;
+}
+.wg-table.table-product-list .product-item > .flex > div:first-child {
+    width: 100px;
+    flex-shrink: 0;
+}
+.gap20 {
+    gap: 60px !important;
+}
+
+</style>
 </head>
 
 <body class="body">
@@ -149,7 +174,7 @@ $result = mysqli_query($conn, $query);
                                         <a class="tf-button style-1 w208" href="add-product.php"><i class="icon-plus"></i>Add new</a>
                                     </div>
                                     <div class="wg-table table-product-list">
-                                        <ul class="table-title flex gap20 mb-14">
+                                        <ul class="table-title1 flex  mb-14">
                                             <li>
                                                 <div class="body-title">Product Name</div>
                                             </li>    

@@ -14,7 +14,7 @@ if (empty($_SESSION['admin_session'])) {
     <!-- Basic Page Needs -->
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
-    <title>Remos eCommerce Admin Dashboard HTML Template</title>
+    <title>Iskcon Ravet</title>
 
     <meta name="author" content="themesflat.com">
 

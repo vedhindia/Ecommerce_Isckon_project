@@ -344,8 +344,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         <div class="cols gap10">
             <button class="tf-button w-full" type="submit">Add product</button>
-            <button class="tf-button style-1 w-full" type="submit" name="save_draft" value="1">Save as draft</button>
-            <a href="#" class="tf-button style-2 w-full">Schedule</a>
+            <!-- <button class="tf-button style-1 w-full" type="submit" name="save_draft" value="1">Save as draft</button>
+            <a href="#" class="tf-button style-2 w-full">Schedule</a> -->
         </div>
     </div>
 </form>

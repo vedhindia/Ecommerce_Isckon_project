@@ -63,6 +63,12 @@ $result = mysqli_query($conn, $query);
     <link rel="shortcut icon" href="images/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="images/favicon.png">
 
+    <style>
+        .wg-table.table-all-user .user-item > .flex > div:first-child {
+          width: 192px;
+          flex-shrink: 0;
+}
+    </style>
 </head>
 
 <body class="body">
