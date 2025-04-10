@@ -203,11 +203,25 @@
                                             </li>
                                         </ul>
                                     </li> -->
-                                    <li class="menu-item">
-                                        <a href="gallery.php" class="">
+                                    
+                                    <li class="menu-item has-children">
+                                        <a href="javascript:void(0);" class="menu-item-button">
                                             <div class="icon"><i class="icon-image"></i></div>
                                             <div class="text">Gallery</div>
                                         </a>
+                                        <ul class="sub-menu">
+                                            <li class="sub-menu-item">
+                                                <a href="Gallery.php" class="">
+                                                    <div class="text">Gallery list</div>
+                                                </a>
+                                            </li>
+                                            <li class="sub-menu-item">
+                                                <a href="new-gallery.php" class="">
+                                                    <div class="text">Add Gallery</div>
+                                                </a>
+                                            </li>
+                                            
+                                        </ul>
                                     </li>
                                     <li class="menu-item">
                                         <a href="report.php" class="">
