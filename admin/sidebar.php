@@ -145,11 +145,11 @@
                                                     <div class="text">Order list</div>
                                                 </a>
                                             </li>
-                                            <li class="sub-menu-item">
+                                            <!-- <li class="sub-menu-item">
                                                 <a href="oder-detail.php" class="">
                                                     <div class="text">Order detail</div>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             <li class="sub-menu-item">
                                                 <a href="oder-tracking.php" class="">
                                                     <div class="text">Order tracking</div>

@@ -71,14 +71,14 @@ requireLogin();
         <!-- =========================== Breadcrumbs =================================== -->
 
 
-      
 
 
-       <!-- =========================== News & Articles =================================== -->
-<section class="gray">
-    <div class="container">
-        <div class="row">
-        <?php include 'admin/dbconnection.php';
+
+        <!-- =========================== News & Articles =================================== -->
+        <section class="gray">
+            <div class="container">
+                <div class="row">
+                    <?php include 'admin/dbconnection.php';
             // Query to get blogs with their featured images
             $sql = "SELECT b.*, bi.image_path 
                    FROM blogs b
@@ -113,51 +113,54 @@ requireLogin();
                         $twoLineExcerpt .= '...';
                     }
             ?>
-            <!-- Single Blog -->
-            <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
-                <article class="post-grid-layout">
-                    <a href="blog-detail.php?id=<?php echo $row['id']; ?>">
-                        <div class="post-article-header">
-                            <img src="admin/<?php echo $imagePath; ?>" class="img-fluid mx-auto" alt="<?php echo $row['title']; ?>">
-                        </div>
-                    </a>
-                    <div class="post-article box-inner">
-                        <div class="post-grid-caption-header">
-                            <span class="post-article-cat theme-bg">Blog</span>
-                            <h4 class="entry-title">
-                                <a href="blog-detail.html?id=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a>
-                            </h4>
-                            <div class="post-short-des">
-                                <?php echo $twoLineExcerpt; ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="post-article-footer">
-                        <div class="post-author">
-                            <img src="assets/img/user-3.jpg" class="img-fluid" alt="">
-                            <a href="#" class="theme-cl">
-                                <?php echo !empty($row['author']) ? $row['author'] : 'Admin'; ?>
+                    <!-- Single Blog -->
+                    <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                        <article class="post-grid-layout">
+                            <a href="blog-detail.php?id=<?php echo $row['id']; ?>">
+                                <div class="post-article-header">
+                                    <img src="admin/<?php echo $imagePath; ?>" class="img-fluid mx-auto"
+                                        alt="<?php echo $row['title']; ?>">
+                                </div>
                             </a>
-                        </div>
-                        <span><i class="ti-calendar mr-1"></i><?php echo $timeAgo; ?></span>
+                            <div class="post-article box-inner">
+                                <div class="post-grid-caption-header">
+                                    <span class="post-article-cat theme-bg">Blog</span>
+                                    <h4 class="entry-title">
+                                        <a
+                                            href="blog-detail.html?id=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a>
+                                    </h4>
+                                    <div class="post-short-des">
+                                        <?php echo $twoLineExcerpt; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="post-article-footer">
+                                <div class="post-author">
+                                    <img src="assets/img/user-3.jpg" class="img-fluid" alt="">
+                                    <a href="#" class="theme-cl">
+                                        <?php echo !empty($row['author']) ? $row['author'] : 'Admin'; ?>
+                                    </a>
+                                </div>
+                                <span><i class="ti-calendar mr-1"></i><?php echo $timeAgo; ?></span>
+                            </div>
+                        </article>
                     </div>
-                </article>
-            </div>
-            <?php
+                    <?php
                 }
             } else {
                 echo "<div class='col-12 text-center'><p>No blog posts found.</p></div>";
             }
             ?>
-            
-            <div class="col-md-12 col-md-12 text-center">
-                <a class="btn btn-theme rounded" href="#">Load More Blogs<i
-                        class="ml-2 fa fa-spinner fa-spin"></i> </a>
+
+                    <div class="col-md-12 col-md-12 text-center">
+                        <a class="btn btn-theme rounded" href="#">Load More Blogs<i
+                                class="ml-2 fa fa-spinner fa-spin"></i> </a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-<!-- =========================== News & Articles =================================== -->
+        </section>
+        <!-- =========================== News & Articles =================================== -->
+
 
 
         <!-- ============================ Call To Action ================================== -->
@@ -168,17 +171,20 @@ requireLogin();
 
                         <div class="call_action_wrap">
                             <div class="call_action_wrap-head">
-                                <h3>Do You Have Questions ?</h3>
-                                <span>We'll help you to grow your career and growth.</span>
+                                <h3>Stay Connected With Our Temple</h3>
+                                <span>Receive updates about upcoming events, festivals, and special offerings</span>
                             </div>
                             <div class="newsletter_box">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Subscribe here...">
-                                    <div class="input-group-append">
-                                        <button class="btn search_btn" type="button"><i
-                                                class="fas fa-arrow-alt-circle-right"></i></button>
+                                <form action="subscribe.php" method="post">
+                                    <div class="input-group">
+                                        <input type="email" name="email" class="form-control"
+                                            placeholder="Enter your email address" required>
+                                        <div class="input-group-append">
+                                            <button class="btn search_btn" type="submit"><i
+                                                    class="fas fa-arrow-alt-circle-right"></i></button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
 
@@ -187,6 +193,8 @@ requireLogin();
             </div>
         </section>
         <!-- ============================ Call To Action End ================================== -->
+
+
 
         <!-- ============================ Footer Start ================================== -->
         <?php include('footer.php')?>

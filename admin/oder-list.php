@@ -12,7 +12,7 @@ if(isset($_GET['search']) && !empty($_GET['search'])) {
 }
 
 // Query to fetch orders - with search functionality
-$query = "SELECT o.*, p.product_name, u.first_name, u.last_name, py.payment_status 
+$query = "SELECT o.id, o.product_id, o.user_id, o.total, o.email, o.phone, o.created_at, p.product_name, u.first_name, u.last_name, py.payment_status 
           FROM orders o
           INNER JOIN products p ON o.product_id = p.id
           INNER JOIN users u ON o.user_id = u.id
@@ -219,12 +219,7 @@ $result = mysqli_query($conn, $query);
                                                         <div class="item eye">
                                                             <a href="view-order.php?id=<?php echo $row['id']; ?>"><i class="icon-eye"></i></a>
                                                         </div>
-                                                        <div class="item edit">
-                                                            <a href="edit-order.php?id=<?php echo $row['id']; ?>"><i class="icon-edit-3"></i></a>
-                                                        </div>
-                                                        <div class="item trash">
-                                                            <a href="#" onclick="deleteOrder(<?php echo $row['id']; ?>)"><i class="icon-trash-2"></i></a>
-                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </li>
@@ -240,32 +235,31 @@ $result = mysqli_query($conn, $query);
                                     <div class="divider"></div>
                                     <div class="flex items-center justify-between flex-wrap gap10">
                                         <div class="text-tiny">Showing <?php echo min($total_records, $results_per_page); ?> of <?php echo $total_records; ?> entries</div>
-                                        <?php if ($total_pages > 1): ?>
                                         <ul class="wg-pagination">
                                             <li <?php if($page <= 1) echo 'class="disabled"'; ?>>
                                                 <a href="<?php if($page <= 1) echo '#'; else echo '?page='.($page-1).((!empty($search)) ? '&search='.$search : ''); ?>">
                                                     <i class="icon-chevron-left"></i>
                                                 </a>
                                             </li>
-                                            
-                                            <?php
+                                            <?php 
                                             $start_page = max(1, $page - 2);
-                                            $end_page = min($start_page + 4, $total_pages);
+                                            $end_page = min($total_pages, $start_page + 4);
+                                            if($end_page - $start_page < 4 && $total_pages > 4) {
+                                                $start_page = max(1, $end_page - 4);
+                                            }
                                             
-                                            for ($i = $start_page; $i <= $end_page; $i++): 
+                                            for($i = $start_page; $i <= $end_page; $i++) { 
                                             ?>
-                                                <li <?php if($page == $i) echo 'class="active"'; ?>>
-                                                    <a href="?page=<?php echo $i; ?><?php echo (!empty($search)) ? '&search='.$search : ''; ?>"><?php echo $i; ?></a>
-                                                </li>
-                                            <?php endfor; ?>
-                                            
+                                            <li <?php if($page == $i) echo 'class="active"'; ?>>
+                                                <a href="?page=<?php echo $i; ?><?php echo (!empty($search)) ? '&search='.$search : ''; ?>"><?php echo $i; ?></a>
+                                            </li>
+                                            <?php } ?>
                                             <li <?php if($page >= $total_pages) echo 'class="disabled"'; ?>>
                                                 <a href="<?php if($page >= $total_pages) echo '#'; else echo '?page='.($page+1).((!empty($search)) ? '&search='.$search : ''); ?>">
                                                     <i class="icon-chevron-right"></i>
                                                 </a>
                                             </li>
                                         </ul>
-                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <!-- /order-list -->

@@ -62,35 +62,34 @@ requireLogin();
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block w-100" src="assets/img/banner-4.png" alt="First slide">
+                    <img class="d-block w-100" src="assets/img/bannerr1.jpg" alt="First slide">
                     <div class="carousel-caption banner_caption light">
-                        <h4>Get <span class="theme-cl">Free Deliver</span> Your Order At Home</h4>
-                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                            consequuntur magni dolores.</p>
-                        <a href="search-sidebar.html" class="btn btn-theme">Order Now</a>
+                        <h4 style="color:black" >Pure <span class="theme-cl">Prasadam</span> Delivered To Your Doorstep</h4>
+                        <p style="color:black" >Experience the divine taste of temple-quality prasadam prepared with devotion and the finest
+                            ingredients, delivered fresh to your home.</p>
+                        <a href="shop.php?category=prasadam" class="btn btn-theme">Order Now</a>
                     </div>
                 </div>
 
                 <div class="carousel-item">
-                    <img class="d-block w-100" src="assets/img/banner-5.png" alt="First slide">
+                    <img class="d-block w-100" src="assets/img/bannerr2.jpg" alt="First slide">
                     <div class="carousel-caption banner_caption light">
-                        <h4>Get <span class="theme-cl">Fresh</span> Fruits & Vegetables </h4>
-                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                            consequuntur magni dolores.</p>
-                        <a href="search-sidebar.html" class="btn btn-theme">Order Now</a>
+                        <h4 style="color:black" >Authentic <span class="theme-cl">Devotional</span> Items & Spiritual Gifts</h4>
+                        <p style="color:black" >Enhance your worship with our carefully selected pooja items, deities, and devotional
+                            accessories to create a sacred space at home.</p>
+                        <a href="shop.php?category=pooja" class="btn btn-theme">Shop Now</a>
                     </div>
                 </div>
 
                 <div class="carousel-item">
-                    <img class="d-block w-100" src="assets/img/banner-6.png" alt="First slide">
+                    <img class="d-block w-100" src="assets/img/bannerr3.jpg" alt="First slide">
                     <div class="carousel-caption banner_caption">
-                        <h4>Fresh Fruits in <span class="theme-cl">Your City</span> with Free Deliver</h4>
-                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                            consequuntur magni dolores.</p>
-                        <a href="search-sidebar.html" class="btn btn-theme">Order Now</a>
+                        <h4 style="color:black" >Spiritual <span class="theme-cl">Knowledge</span> For Your Journey</h4>
+                        <p style="color:black" >Discover spiritual wisdom with our collection of Bhagavad Gita, Srimad Bhagavatam, and other
+                            authentic Vedic literature by Srila Prabhupada.</p>
+                        <a href="shop.php?category=books" class="btn btn-theme">Explore Books</a>
                     </div>
                 </div>
-
             </div>
 
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -103,7 +102,6 @@ requireLogin();
             </a>
         </div>
         <!-- ======================== Banner End ==================== -->
-
 
 
 
@@ -579,106 +577,109 @@ requireLogin();
 
 
 
-        
-<!-- ======================== Gallery ==================== -->
-<section class="">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="sec-heading-flex pl-2 pr-2">
-                    <div class="sec-heading-flex-one">
-                        <h2>Gallery</h2>
-                    </div>
-                    <div class="sec-heading-flex-last">
-                        <a href="Gallery.php" class="btn btn-theme">View More<i class="ti-arrow-right ml-2"></i></a>
+
+        <!-- ======================== Gallery ==================== -->
+        <section class="">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="sec-heading-flex pl-2 pr-2">
+                            <div class="sec-heading-flex-one">
+                                <h2>Gallery</h2>
+                            </div>
+                            <div class="sec-heading-flex-last">
+                                <a href="Gallery.php" class="btn btn-theme">View More<i
+                                        class="ti-arrow-right ml-2"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-lg-12 col-md-12">
-                <div class="owl-carousel products-slider owl-theme">
-                    <?php include 'admin/dbconnection.php';
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="owl-carousel products-slider owl-theme">
+                            <?php include 'admin/dbconnection.php';
                     $sql = "SELECT * FROM gallery";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         // output data of each row
                         while($row = $result->fetch_assoc()) {
                     ?>
-                    <!-- Single Item -->
-                    <div class="item">
-                        <div class="woo_product_grid">
-                            <!-- <span class="woo_pr_tag hot">Hot</span> -->
-                            <div class="woo_product_thumb">
-                                <img src="admin/uploads/gallery/<?php echo $row['image_path']; ?>" class="img-fluid"
-                                    alt="<?php echo $row['image_title']; ?>" />
+                            <!-- Single Item -->
+                            <div class="item">
+                                <div class="woo_product_grid">
+                                    <!-- <span class="woo_pr_tag hot">Hot</span> -->
+                                    <div class="woo_product_thumb">
+                                        <img src="admin/uploads/gallery/<?php echo $row['image_path']; ?>"
+                                            class="img-fluid" alt="<?php echo $row['image_title']; ?>" />
+                                    </div>
+
+                                    <div class="woo_product_cart hover">
+                                        <ul>
+                                            <li><a href="javascript:void(0);"
+                                                    class="woo_cart_btn btn_cart galleryShowFullImage"
+                                                    data-image="admin/uploads/gallery/<?php echo $row['image_path']; ?>"
+                                                    data-title="<?php echo $row['image_title']; ?>"><i
+                                                        class="ti-eye"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <div class="woo_product_cart hover">
-                                <ul>
-                                    <li><a href="javascript:void(0);" class="woo_cart_btn btn_cart galleryShowFullImage" 
-                                           data-image="admin/uploads/gallery/<?php echo $row['image_path']; ?>"
-                                           data-title="<?php echo $row['image_title']; ?>"><i class="ti-eye"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <?php
+                            <?php
                         }
                     } else {
                         echo "No images found in gallery";
                     }
                     ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Image Enlarged View Modal -->
+        <div class="modal" id="galleryFullImagePopup" tabindex="-1" role="dialog"
+            aria-labelledby="galleryFullImageLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="galleryFullImageLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="" id="galleryFullSizeImage" class="img-fluid" alt="Gallery Image">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Gallery Image Enlarged View Modal -->
-<div class="modal" id="galleryFullImagePopup" tabindex="-1" role="dialog" aria-labelledby="galleryFullImageLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="galleryFullImageLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <img src="" id="galleryFullSizeImage" class="img-fluid" alt="Gallery Image">
-            </div>
-        </div>
-    </div>
-</div>
+        <div class="clearfix"></div>
+        <!-- ======================== Gallery ==================== -->
 
-<div class="clearfix"></div>
-<!-- ======================== Gallery ==================== -->
+        <!-- Add this JavaScript at the end of your file, before closing body tag -->
+        <script>
+        $(document).ready(function() {
+            // When the view icon is clicked
+            $('.galleryShowFullImage').on('click', function() {
+                // Get image path and title from data attributes
+                var imagePath = $(this).data('image');
+                var imageTitle = $(this).data('title');
 
-<!-- Add this JavaScript at the end of your file, before closing body tag -->
-<script>
-$(document).ready(function() {
-    // When the view icon is clicked
-    $('.galleryShowFullImage').on('click', function() {
-        // Get image path and title from data attributes
-        var imagePath = $(this).data('image');
-        var imageTitle = $(this).data('title');
-        
-        // Set the image source and title in the modal
-        $('#galleryFullSizeImage').attr('src', imagePath);
-        $('#galleryFullImageLabel').text(imageTitle);
-        
-        // Show the modal
-        $('#galleryFullImagePopup').modal({
-            show: true,
-            backdrop: true,
-            keyboard: true
+                // Set the image source and title in the modal
+                $('#galleryFullSizeImage').attr('src', imagePath);
+                $('#galleryFullImageLabel').text(imageTitle);
+
+                // Show the modal
+                $('#galleryFullImagePopup').modal({
+                    show: true,
+                    backdrop: true,
+                    keyboard: true
+                });
+            });
         });
-    });
-});
-</script>
-
+        </script>
 
 
 
@@ -695,17 +696,20 @@ $(document).ready(function() {
 
                         <div class="call_action_wrap">
                             <div class="call_action_wrap-head">
-                                <h3>Do You Have Questions ?</h3>
-                                <span>We'll help you to grow your career and growth.</span>
+                                <h3>Stay Connected With Our Temple</h3>
+                                <span>Receive updates about upcoming events, festivals, and special offerings</span>
                             </div>
                             <div class="newsletter_box">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Subscribe here...">
-                                    <div class="input-group-append">
-                                        <button class="btn search_btn" type="button"><i
-                                                class="fas fa-arrow-alt-circle-right"></i></button>
+                                <form action="subscribe.php" method="post">
+                                    <div class="input-group">
+                                        <input type="email" name="email" class="form-control"
+                                            placeholder="Enter your email address" required>
+                                        <div class="input-group-append">
+                                            <button class="btn search_btn" type="submit"><i
+                                                    class="fas fa-arrow-alt-circle-right"></i></button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
 
@@ -714,6 +718,9 @@ $(document).ready(function() {
             </div>
         </section>
         <!-- ============================ Call To Action End ================================== -->
+
+
+
 
         <!-- ============================ Footer Start ================================== -->
         <?php include('footer.php')?>

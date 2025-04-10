@@ -187,34 +187,34 @@ requireLogin();
 <!-- =========================== My All Orders =================================== -->
 
 			
-			<!-- ============================ Call To Action ================================== --> 
-			<section class="theme-bg call_action_wrap-wrap">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-12">
-							
-							<div class="call_action_wrap">
-								<div class="call_action_wrap-head">
-									<h3>Do You Have Questions ?</h3>
-									<span>We'll help you to grow your career and growth.</span>
-								</div>
-								<div class="newsletter_box">
-									<div class="input-group">
-										<input type="text" class="form-control" placeholder="Subscribe here...">
-										<div class="input-group-append">
-										<button class="btn search_btn" type="button"><i class="fas fa-arrow-alt-circle-right"></i></button>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-						</div>
-					</div>
-				</div>
-			</section>
-			<!-- ============================ Call To Action End ================================== -->
-			
-			
+		<!-- ============================ Call To Action ================================== -->
+<section class="theme-bg call_action_wrap-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                
+                <div class="call_action_wrap">
+                    <div class="call_action_wrap-head">
+                        <h3>Stay Connected With Our Temple</h3>
+                        <span>Receive updates about upcoming events, festivals, and special offerings</span>
+                    </div>
+                    <div class="newsletter_box">
+                        <form action="subscribe.php" method="post">
+                            <div class="input-group">
+                                <input type="email" name="email" class="form-control" placeholder="Enter your email address" required>
+                                <div class="input-group-append">
+                                    <button class="btn search_btn" type="submit"><i class="fas fa-arrow-alt-circle-right"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ============================ Call To Action End ================================== -->	
 
 
             <!-- ============================ Footer Start ================================== -->
