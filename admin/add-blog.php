@@ -7,6 +7,8 @@ if (empty($_SESSION['admin_session'])) {
 }
 
 // Set up alert messages
+// Set up alert messages
+
 $successMessage = '';
 $errorMessage = '';
 
